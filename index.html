@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>김남혁 포트폴리오</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.7/babel.min.js"></script>
+  <script src="https://unpkg.com/lucide@0.577.0"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: { primary: '#6366f1' },
+          fontFamily: { sans: ['Pretendard', 'Apple SD Gothic Neo', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap');
+    * { font-family: 'Noto Sans KR', sans-serif; }
+    html { scroll-behavior: smooth; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 3px; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 20px rgba(99,102,241,0.3); }
+      50% { box-shadow: 0 0 40px rgba(99,102,241,0.7); }
+    }
+    @keyframes shimmer {
+      0% { background-position: -200% center; }
+      100% { background-position: 200% center; }
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    @keyframes countUp {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .animate-fadeInUp { animation: fadeInUp 0.7s ease forwards; }
+    .animate-fadeInLeft { animation: fadeInLeft 0.7s ease forwards; }
+    .animate-fadeInRight { animation: fadeInRight 0.7s ease forwards; }
+    .animate-float { animation: float 4s ease-in-out infinite; }
+    .animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+    .animate-countUp { animation: countUp 0.5s ease forwards; }
+    .animate-spin-slow { animation: spin-slow 20s linear infinite; }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #60a5fa, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .gradient-bg-animated {
+      background: linear-gradient(-45deg, #1e1b4b, #0f172a, #1e293b, #0f172a);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
+    }
+    .glass {
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .glass-strong {
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(30px);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .card-hover {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .card-hover:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 20px 60px rgba(99,102,241,0.2);
+    }
+    .skill-bar {
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .section-visible .animate-on-scroll {
+      animation: fadeInUp 0.7s ease forwards;
+    }
+    .timeline-line {
+      background: linear-gradient(to bottom, #6366f1, #8b5cf6, #c084fc);
+    }
+    .nav-link {
+      position: relative;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(to right, #6366f1, #c084fc);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover::after, .nav-link.active::after {
+      width: 100%;
+    }
+    .hero-grid {
+      background-image: 
+        linear-gradient(rgba(99,102,241,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,102,241,0.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .tag-pill {
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.2));
+      border: 1px solid rgba(99,102,241,0.3);
+      transition: all 0.2s ease;
+    }
+    .tag-pill:hover {
+      background: linear-gradient(135deg, rgba(99,102,241,0.4), rgba(139,92,246,0.4));
+      transform: scale(1.05);
+    }
+    .progress-ring {
+      transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(99,102,241,0.5), transparent);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 overflow-x-hidden">
+  <div id="root"></div>
+  <script type="text/babel">
+    // Lucide 아이콘 컴포넌트 헬퍼
+    const createLucideIcon = (iconName) => {
+      return ({ className = '', size = 24, strokeWidth = 2, ...props }) => {
+        const ref = React.useRef(null);
+        React.useEffect(() => {
+          if (ref.current && typeof lucide !== 'undefined' && lucide[iconName]) {
+            ref.current.innerHTML = '';
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            const iconNode = lucide.createElement(lucide[iconName]);
+            svg.innerHTML = iconNode.innerHTML;
+            Array.from(iconNode.attributes).forEach(attr => {
+              svg.setAttribute(attr.name, attr.value);
+            });
+            if (className) svg.setAttribute('class', className);
+            svg.setAttribute('width', size);
+            svg.setAttribute('height', size);
+            svg.setAttribute('stroke-width', strokeWidth);
+            ref.current.appendChild(svg);
+          }
+        }, [className, size, strokeWidth]);
+        return React.createElement('span', {
+          ref,
+          style: { display: 'inline-flex', alignItems: 'center', justifyContent: 'center' },
+          ...props
+        });
+      };
+    };
+    const Mail = createLucideIcon('Mail');
+    const Phone = createLucideIcon('Phone');
+    const MapPin = createLucideIcon('MapPin');
+    const Calendar = createLucideIcon('Calendar');
+    const Award = createLucideIcon('Award');
+    const Briefcase = createLucideIcon('Briefcase');
+    const GraduationCap = createLucideIcon('GraduationCap');
+    const Code2 = createLucideIcon('Code2');
+    const ChevronRight = createLucideIcon('ChevronRight');
+    const ChevronDown = createLucideIcon('ChevronDown');
+    const User = createLucideIcon('User');
+    const Star = createLucideIcon('Star');
+    const Target = createLucideIcon('Target');
+    const Zap = createLucideIcon('Zap');
+    const CheckCircle = createLucideIcon('CheckCircle');
+    const ArrowRight = createLucideIcon('ArrowRight');
+    const Menu = createLucideIcon('Menu');
+    const X = createLucideIcon('X');
+    const Heart = createLucideIcon('Heart');
+    const TrendingUp = createLucideIcon('TrendingUp');
+    const Layers = createLucideIcon('Layers');
+    const Monitor = createLucideIcon('Monitor');
+    const Cpu = createLucideIcon('Cpu');
+    const Globe = createLucideIcon('Globe');
+    const MessageSquare = createLucideIcon('MessageSquare');
+    const Clock = createLucideIcon('Clock');
+    const Download = createLucideIcon('Download');
+    const ExternalLink = createLucideIcon('ExternalLink');
+    const Activity = createLucideIcon('Activity');
+    const BarChart2 = createLucideIcon('BarChart2');
+    const Shield = createLucideIcon('Shield');
+    const Sparkles = createLucideIcon('Sparkles');
+    const BookOpen = createLucideIcon('BookOpen');
+    const Home = createLucideIcon('Home');
+
+    
+
+    // ─── 데이터 ───────────────────────────────────────────────
+    const NAV_ITEMS = [
+      { id: 'hero', label: '홈' },
+      { id: 'about', label: '소개' },
+      { id: 'career', label: '경력' },
+      { id: 'skills', label: '역량' },
+      { id: 'education', label: '학력·교육' },
+      { id: 'selfintro', label: '자기소개서' },
+      { id: 'contact', label: '연락처' },
+    ];
+
+    const CAREERS = [
+      {
+        company: '한림대학교 춘천성심병원',
+        period: '2년 (24개월)',
+        role: '사원 · 의료 소모품 발주 및 물류관리',
+        color: 'from-blue-500 to-cyan-500',
+        icon: '🏥',
+        tasks: [
+          '의료 소모품 수요 파악 및 발주 일정 관리',
+          '입고 확인 및 재고 점검, 부서 요청 대응',
+          '물품 계약 흐름 관리 및 문서 정확성 유지',
+          '부서 간 조율 및 물류 행정 처리',
+        ],
+        reason: '계약 종료',
+        keyword: '물류관리 · 발주 · 문서행정',
+      },
+      {
+        company: '㈜지오멕스소프트',
+        period: '2년 (24개월)',
+        role: '사원 · 기술지원 엔지니어',
+        color: 'from-indigo-500 to-purple-500',
+        icon: '💻',
+        tasks: [
+          '사용자 문의 접수 및 원인 파악, 해결책 제시',
+          '전산 시스템 이해 및 기술 문서화',
+          '일정 조율 및 타부서 협업 대응',
+          '사용자 응대 및 민원 처리',
+        ],
+        reason: '희망 퇴직',
+        keyword: 'IT지원 · 시스템 · 민원응대',
+      },
+      {
+        company: '오하이오짐',
+        period: '1년 (12개월)',
+        role: '코치 · 회원 강습 및 시설 관리',
+        color: 'from-purple-500 to-pink-500',
+        icon: '💪',
+        tasks: [
+          '회원 강습 및 운동 지도 (보디빌딩)',
+          '회원 관리 및 CRM 운영',
+          '시설 관리 및 현장 운영',
+          '대면 서비스 및 소통 능력 강화',
+        ],
+        reason: '이직',
+        keyword: '회원관리 · 현장운영 · 서비스',
+      },
+    ];
+
+    const SKILLS = [
+      { name: 'AI 활용 능력', level: 85, color: '#6366f1', icon: '🤖' },
+      { name: '오피스 활용 (Excel·Word·PPT)', level: 90, color: '#8b5cf6', icon: '📊' },
+      { name: '문서 작성 및 행정 처리', level: 88, color: '#a855f7', icon: '📝' },
+      { name: '물류·발주 관리', level: 82, color: '#c084fc', icon: '📦' },
+      { name: '전산 시스템 활용', level: 80, color: '#818cf8', icon: '🖥️' },
+      { name: '민원 응대 및 소통', level: 85, color: '#60a5fa', icon: '💬' },
+    ];
+
+    const CERTS = [
+      { name: '컴퓨터 활용능력', year: '2019', org: '대한상공회의소', color: 'from-blue-500 to-indigo-500', icon: '💻' },
+      { name: '생활체육지도사 2급 (보디빌딩)', year: '2022', org: '문화체육관광부', color: 'from-purple-500 to-pink-500', icon: '🏋️' },
+      { name: '1종 보통 운전면허', year: '2010', org: '강원 지방경찰청', color: 'from-green-500 to-teal-500', icon: '🚗' },
+    ];
+
+    const EDUCATIONS = [
+      {
+        school: '강릉원주대학교',
+        major: '무역학과',
+        location: '강릉',
+        grad: '2019년 2월 졸업',
+        color: 'from-blue-500 to-indigo-600',
+        icon: '🎓',
+      },
+    ];
+
+    const TRAINING = [
+      {
+        name: '생성형 AI 및 로코드 기반 융합 소프트웨어 기획 개발자 양성과정',
+        period: '2026.07.20 ~ 2026.09.02',
+        hours: '120시간',
+        org: '넥스텝 컴퓨터 아카데미 학원',
+        status: '수료',
+        color: 'from-indigo-500 to-purple-500',
+        icon: '🚀',
+      },
+    ];
+
+    const SELF_INTRO_SECTIONS = [
+      {
+        title: '지원동기',
+        icon: '🎯',
+        color: 'from-blue-500 to-indigo-500',
+        content: '저는 교육기관의 행정사무직이 단순한 사무 보조가 아니라, 규정 준수와 문서 처리, 구성원 응대, 일정 조율, 시스템 활용이 유기적으로 연결되는 핵심 운영 직무라고 생각합니다. 병원에서는 수요를 읽고 발주와 입고를 관리하며 재고와 계약 흐름을 배웠고, IT 기업에서는 문제를 구조적으로 파악하고 사용자에게 쉽게 설명하는 법을 익혔습니다. 이러한 경험이 교육기관 행정에서 요구하는 구매, 재고, 문서관리, 민원응대, 시스템 활용 역량으로 충분히 연결된다고 생각합니다.',
+      },
+      {
+        title: '성장과정',
+        icon: '🌱',
+        color: 'from-green-500 to-teal-500',
+        content: '저는 한 가지 일을 끝까지 마무리하는 습관과 새로운 환경에 빠르게 적응하는 태도를 함께 키우며 성장했습니다. 병원, IT 기업, 체육 현장처럼 성격이 전혀 다른 조직을 차례로 경험하며 업무의 본질을 읽는 힘을 배웠습니다. 매뉴얼과 선배들의 업무 방식을 빠르게 정리해 메모하고, 반복되는 흐름을 체크리스트로 만들어 습관화했습니다. 일은 결국 사람과 사람 사이의 신뢰를 만드는 과정이라는 사실을 배웠습니다.',
+      },
+      {
+        title: '성격의 장단점',
+        icon: '⚖️',
+        color: 'from-purple-500 to-pink-500',
+        content: '장점은 성실함과 꼼꼼함, 그리고 낯선 환경에 대한 빠른 적응력입니다. 맡은 일을 대충 처리하기보다 기준을 먼저 확인하고 정확하게 수행해야 마음이 놓이는 편이라, 행정업무에서 가장 중요한 실수 방지와 기록의 정확성을 높이는 데 강점이 됩니다. 단점은 과업을 세밀하게 보려는 성향이 있어 때때로 필요 이상의 재확인을 하려는 점입니다. 이를 보완하기 위해 우선순위를 먼저 정하고, 체크리스트를 활용하여 속도와 정확성의 균형을 맞추고 있습니다.',
+      },
+      {
+        title: '직무 관련 경험 및 역량',
+        icon: '💼',
+        color: 'from-orange-500 to-red-500',
+        content: '직무 관련 경험은 병원 물류, 기술지원, 현장 운영이라는 세 가지 축으로 정리할 수 있습니다. 한림대학교 춘천성심병원에서 24개월간 의료 소모품 발주 및 물류관리를 담당하며 수요 파악, 발주 일정 관리, 입고 확인, 재고 점검, 부서 요청 대응을 경험했습니다. ㈜지오멕스소프트에서 24개월간 기술지원 엔지니어로 근무하며 전산 시스템 이해, 문서화, 일정 조율, 사용자 응대, 타부서와의 협업 역량을 길렀습니다.',
+      },
+      {
+        title: '입사 후 포부',
+        icon: '🚀',
+        color: 'from-indigo-500 to-blue-500',
+        content: '입사 후에는 먼저 조직의 규정과 업무 흐름을 정확히 이해하는 데 집중하겠습니다. 입사 초기 30일은 부서별 역할, 문서 양식, 전산 시스템, 결재 흐름을 빠르게 익혀 기본 업무를 독립적으로 처리할 수 있는 수준에 도달하겠습니다. 60일 차에는 반복되는 업무의 오류 포인트를 정리해 체크리스트와 참고 자료로 표준화하겠습니다. 장기적으로는 정확성, 책임감, 소통 능력을 바탕으로 조직의 안정적인 운영에 기여하는 행정사무 담당자로 성장하고 싶습니다.',
+      },
+    ];
+
+    const STATS = [
+      { label: '총 경력', value: '5년+', icon: '📅', color: 'from-blue-500 to-indigo-500' },
+      { label: '보유 자격증', value: '3개', icon: '🏆', color: 'from-purple-500 to-pink-500' },
+      { label: '근무 기관', value: '3곳', icon: '🏢', color: 'from-green-500 to-teal-500' },
+      { label: 'AI 교육', value: '120H', icon: '🤖', color: 'from-orange-500 to-red-500' },
+    ];
+
+    // ─── 컴포넌트 ──────────────────────────────────────────────
+
+    const SectionTitle = ({ children, sub }) => (
+      <div className="text-center mb-16">
+        <p className="text-indigo-400 text-sm font-semibold tracking-widest uppercase mb-3">{sub}</p>
+        <h2 className="text-4xl lg:text-5xl font-bold gradient-text mb-4">{children}</h2>
+        <div className="flex items-center justify-center gap-2 mt-4">
+          <div className="h-px w-16 bg-gradient-to-r from-transparent to-indigo-500"></div>
+          <div className="w-2 h-2 rounded-full bg-indigo-500"></div>
+          <div className="h-px w-16 bg-gradient-to-l from-transparent to-indigo-500"></div>
+        </div>
+      </div>
+    );
+
+    // ─── Navbar ───────────────────────────────────────────────
+    const Navbar = ({ activeSection }) => {
+      const [scrolled, setScrolled] = React.useState(false);
+      const [menuOpen, setMenuOpen] = React.useState(false);
+
+      React.useEffect(() => {
+        const handleScroll = () => setScrolled(window.scrollY > 60);
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+      }, []);
+
+      const scrollTo = (id) => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+        setMenuOpen(false);
+      };
+
+      return (
+        <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          scrolled ? 'bg-slate-950/90 backdrop-blur-xl shadow-lg shadow-black/30 border-b border-white/5' : 'bg-transparent'
+        }`}>
+          <div className="max-w-screen-xl mx-auto px-6 lg:px-12">
+            <div className="flex items-center justify-between h-16 lg:h-20">
+              {/* Logo */}
+              <button onClick={() => scrollTo('hero')} className="flex items-center gap-3 group">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-white font-bold text-lg">K</span>
+                </div>
+                <div>
+                  <p className="text-white font-bold text-base leading-tight">김남혁</p>
+                  <p className="text-indigo-400 text-xs">Portfolio</p>
+                </div>
+              </button>
+
+              {/* Desktop Nav */}
+              <div className="hidden lg:flex items-center gap-8">
+                {NAV_ITEMS.map(item => (
+                  <button
+                    key={item.id}
+                    onClick={() => scrollTo(item.id)}
+                    className={`nav-link text-sm font-medium transition-colors duration-200 ${
+                      activeSection === item.id ? 'text-indigo-400 active' : 'text-slate-400 hover:text-white'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Contact Button */}
+              <div className="hidden lg:flex items-center gap-4">
+                <a href="mailto:knud91@naver.com"
+                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white text-sm font-semibold hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:scale-105">
+                  <Mail className="w-4 h-4" />
+                  연락하기
+                </a>
+              </div>
+
+              {/* Mobile Menu Button */}
+              <button onClick={() => setMenuOpen(!menuOpen)} className="lg:hidden p-2 text-slate-400 hover:text-white">
+                {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Menu */}
+          {menuOpen && (
+            <div className="lg:hidden bg-slate-900/95 backdrop-blur-xl border-t border-white/10">
+              <div className="px-6 py-4 space-y-3">
+                {NAV_ITEMS.map(item => (
+                  <button key={item.id} onClick={() => scrollTo(item.id)}
+                    className={`block w-full text-left py-2.5 text-sm font-medium transition-colors ${
+                      activeSection === item.id ? 'text-indigo-400' : 'text-slate-400 hover:text-white'
+                    }`}>
+                    {item.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </nav>
+      );
+    };
+
+    // ─── Hero ─────────────────────────────────────────────────
+    const Hero = () => {
+      const [visible, setVisible] = React.useState(false);
+      React.useEffect(() => { setTimeout(() => setVisible(true), 100); }, []);
+
+      return (
+        <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden gradient-bg-animated hero-grid">
+          {/* Background decorations */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl animate-pulse"></div>
+            <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl animate-pulse" style={{animationDelay:'1s'}}></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/5 rounded-full blur-3xl"></div>
+            {/* Floating orbs */}
+            <div className="absolute top-20 right-20 w-4 h-4 bg-indigo-400 rounded-full animate-float opacity-60"></div>
+            <div className="absolute bottom-32 left-16 w-3 h-3 bg-purple-400 rounded-full animate-float opacity-40" style={{animationDelay:'2s'}}></div>
+            <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-blue-400 rounded-full animate-float opacity-50" style={{animationDelay:'1s'}}></div>
+          </div>
+
+          <div className="relative z-10 max-w-screen-xl mx-auto px-6 lg:px-12 py-24">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
+              {/* Left Content */}
+              <div className={`transition-all duration-1000 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}`}>
+                {/* Badge */}
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border border-indigo-500/30 text-indigo-300 text-sm font-medium mb-8">
+                  <Sparkles className="w-4 h-4" />
+                  <span>행정사무 전문가 · 포트폴리오</span>
+                </div>
+
+                {/* Name & Title */}
+                <h1 className="text-6xl lg:text-7xl xl:text-8xl font-black mb-4 leading-tight">
+                  <span className="text-white">김</span>
+                  <span className="gradient-text">남혁</span>
+                </h1>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="h-1 w-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"></div>
+                  <p className="text-xl lg:text-2xl text-slate-300 font-medium">행정사무 · 물류관리 · IT기술지원</p>
+                </div>
+
+                <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-lg">
+                  병원, IT 기업, 체육 현장에서 쌓은 <span className="text-indigo-300 font-semibold">5년+의 다양한 실무 경험</span>을 바탕으로,
+                  정확한 기록과 신속한 응대, 업무 조율 역량을 갖춘 실무형 행정 인재입니다.
+                </p>
+
+                {/* Info Pills */}
+                <div className="flex flex-wrap gap-3 mb-10">
+                  {[
+                    { icon: <MapPin className="w-4 h-4" />, text: '춘천시 거주' },
+                    { icon: <Phone className="w-4 h-4" />, text: '010-9152-8139' },
+                    { icon: <Mail className="w-4 h-4" />, text: 'knud91@naver.com' },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-2 px-4 py-2 rounded-lg glass text-slate-300 text-sm">
+                      <span className="text-indigo-400">{item.icon}</span>
+                      {item.text}
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA Buttons */}
+                <div className="flex flex-wrap gap-4">
+                  <button onClick={() => document.getElementById('career')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="flex items-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 shadow-xl shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105 text-base">
+                    경력 보기
+                    <ArrowRight className="w-5 h-5" />
+                  </button>
+                  <button onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+                    className="flex items-center gap-2 px-8 py-4 rounded-xl glass border border-white/20 text-white font-semibold hover:bg-white/10 transition-all duration-300 hover:scale-105 text-base">
+                    <Mail className="w-5 h-5" />
+                    연락하기
+                  </button>
+                </div>
+              </div>
+
+              {/* Right Content - Profile Card */}
+              <div className={`flex justify-center transition-all duration-1000 delay-300 ${visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'}`}>
+                <div className="relative">
+                  {/* Spinning ring */}
+                  <div className="absolute inset-0 -m-6 rounded-full border border-indigo-500/20 animate-spin-slow"></div>
+                  <div className="absolute inset-0 -m-12 rounded-full border border-purple-500/10 animate-spin-slow" style={{animationDirection:'reverse', animationDuration:'30s'}}></div>
+
+                  {/* Profile Card */}
+                  <div className="relative w-80 glass-strong rounded-3xl p-8 animate-pulse-glow">
+                    {/* Avatar */}
+                    <div className="flex justify-center mb-6">
+                      <div className="relative">
+                        <div className="w-32 h-32 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-2xl shadow-indigo-500/40">
+                          <span className="text-6xl font-black text-white">K</span>
+                        </div>
+                        <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center shadow-lg">
+                          <CheckCircle className="w-5 h-5 text-white" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="text-center mb-6">
+                      <h3 className="text-2xl font-bold text-white mb-1">김남혁</h3>
+                      <p className="text-indigo-400 text-sm font-medium">행정사무 · 물류관리 전문가</p>
+                    </div>
+
+                    <div className="space-y-3">
+                      {[
+                        { label: '성실함', value: 95 },
+                        { label: '꼼꼼함', value: 92 },
+                        { label: '적응력', value: 88 },
+                      ].map((item, i) => (
+                        <div key={i}>
+                          <div className="flex justify-between text-xs mb-1">
+                            <span className="text-slate-400">{item.label}</span>
+                            <span className="text-indigo-300">{item.value}%</span>
+                          </div>
+                          <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+                            <div className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
+                              style={{width: `${item.value}%`}}></div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Stats */}
+                    <div className="grid grid-cols-2 gap-3 mt-6">
+                      {STATS.map((s, i) => (
+                        <div key={i} className={`rounded-xl p-3 bg-gradient-to-br ${s.color} bg-opacity-20 text-center`}
+                          style={{background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)'}}>
+                          <div className="text-xl mb-1">{s.icon}</div>
+                          <div className="text-white font-bold text-lg">{s.value}</div>
+                          <div className="text-slate-400 text-xs">{s.label}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Scroll Indicator */}
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-slate-500">
+              <span className="text-xs tracking-widest uppercase">Scroll</span>
+              <ChevronDown className="w-5 h-5 animate-bounce" />
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    // ─── About ────────────────────────────────────────────────
+    const About = () => (
+      <section id="about" className="py-28 bg-slate-900 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600/5 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-600/5 rounded-full blur-3xl"></div>
+        </div>
+        <div className="max-w-screen-xl mx-auto px-6 lg:px-12 relative z-10">
+          <SectionTitle sub="About Me">나는 누구인가</SectionTitle>
+
+          <div className="grid lg:grid-cols-3 gap-8">
+            {[
+              {
+                icon: '🎯',
+                title: '목표 지향적',
+                color: 'from-blue-500 to-indigo-600',
+                desc: '맡은 일을 끝까지 완수하는 책임감. 병원, IT, 체육 현장 등 다양한 환경에서 각 조직의 목표에 맞춰 업무를 정확히 수행해왔습니다.',
+              },
+              {
+                icon: '⚡',
+                title: '빠른 적응력',
+                color: 'from-indigo-500 to-purple-600',
+                desc: '성격이 전혀 다른 세 조직을 거치며 각 환경의 규정과 절차를 빠르게 체득. 매뉴얼과 체크리스트를 활용해 오류 없이 업무를 처리합니다.',
+              },
+              {
+                icon: '🤝',
+                title: '소통 중심',
+                color: 'from-purple-500 to-pink-600',
+                desc: '상대가 원하는 정보를 먼저 정리해 전달하는 습관. 민원 응대, 부서 간 협업, 회원 관리 등 다양한 대인 경험으로 원활한 소통 능력을 갖추었습니다.',
+              },
+            ].map((item, i) => (
+              <div key={i} className={`glass rounded-2xl p-8 card-hover group`}>
+                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center text-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  {item.icon}
+                </div>
+                <h3 className="text-xl font-bold text-white mb-4">{item.title}</h3>
+                <p className="text-slate-400 leading-relaxed text-sm">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Quote */}
+          <div className="mt-12 glass rounded-2xl p-8 text-center relative overflow-hidden">
+            <div className="absolute inset-0 bg-gradient-to-r from-indigo-600/5 via-purple-600/5 to-pink-600/5"></div>
+            <div className="relative z-10">
+              <div className="text-5xl text-indigo-500/30 font-serif mb-4">"</div>
+              <p className="text-xl lg:text-2xl text-slate-200 font-medium leading-relaxed max-w-3xl mx-auto">
+                일은 결국 <span className="text-indigo-400 font-bold">사람과 사람 사이의 신뢰를 만드는 과정</span>이라는 사실을 배웠습니다.
+                규정과 절차를 지키며, 변화가 있어도 흔들리지 않는 실무자가 되겠습니다.
+              </p>
+              <p className="text-slate-500 mt-4 text-sm">— 김남혁</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    // ─── Career ───────────────────────────────────────────────
+    const Career = () => (
+      <section id="career" className="py-28 bg-slate-950 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-1/2 left-0 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl"></div>
+        </div>
+        <div className="max-w-screen-xl mx-auto px-6 lg:px-12 relative z-10">
+          <SectionTitle sub="Career">경력 사항</SectionTitle>
+
+          {/* Total Career Banner */}
+          <div className="glass rounded-2xl p-6 mb-12 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                <Briefcase className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <p className="text-white font-bold text-lg">총 경력 5년 (60개월)</p>
+                <p className="text-slate-400 text-sm">3개 기관 · 다양한 직무 경험</p>
+              </div>
+            </div>
+            <div className="flex gap-6">
+              {[
+                { label: '병원 물류', value: '24M', color: 'text-blue-400' },
+                { label: 'IT 기술지원', value: '24M', color: 'text-purple-400' },
+                { label: '현장 운영', value: '12M', color: 'text-pink-400' },
+              ].map((s, i) => (
+                <div key={i} className="text-center">
+                  <p className={`text-2xl font-black ${s.color}`}>{s.value}</p>
+                  <p className="text-slate-500 text-xs">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Career Cards */}
+          <div className="space-y-8">
+            {CAREERS.map((c, i) => (
+              <div key={i} className="glass rounded-2xl overflow-hidden card-hover group">
+                <div className={`h-1.5 bg-gradient-to-r ${c.color}`}></div>
+                <div className="p-8">
+                  <div className="flex flex-wrap items-start justify-between gap-6">
+                    {/* Left */}
+                    <div className="flex items-start gap-5">
+                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${c.color} flex items-center justify-center text-3xl shadow-lg flex-shrink-0 group-hover:scale-110 transition-transform duration-300`}>
+                        {c.icon}
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-3 flex-wrap mb-2">
+                          <h3 className="text-xl font-bold text-white">{c.company}</h3>
+                          <span className="px-3 py-1 rounded-full text-xs font-semibold glass border border-white/10 text-slate-300">
+                            {c.period}
+                          </span>
+                        </div>
+                        <p className="text-indigo-300 font-medium mb-1">{c.role}</p>
+                        <div className="flex items-center gap-2">
+                          <span className="tag-pill px-3 py-1 rounded-full text-xs text-indigo-300">{c.keyword}</span>
+                          <span className="text-slate-600 text-xs">퇴직사유: {c.reason}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Right - Tasks */}
+                    <div className="flex-1 min-w-64">
+                      <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3">주요 업무</p>
+                      <div className="grid sm:grid-cols-2 gap-2">
+                        {c.tasks.map((t, j) => (
+                          <div key={j} className="flex items-start gap-2 text-sm text-slate-300">
+                            <ChevronRight className="w-4 h-4 text-indigo-400 flex-shrink-0 mt-0.5" />
+                            <span>{t}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+
+    // ─── Skills ───────────────────────────────────────────────
+    const Skills = () => {
+      const [animated, setAnimated] = React.useState(false);
+      const ref = React.useRef(null);
+
+      React.useEffect(() => {
+        const observer = new IntersectionObserver(
+          ([entry]) => { if (entry.isIntersecting) setAnimated(true); },
+          { threshold: 0.3 }
+        );
+        if (ref.current) observer.observe(ref.current);
+        return () => observer.disconnect();
+      }, []);
+
+      return (
+        <section id="skills" className="py-28 bg-slate-900 relative overflow-hidden" ref={ref}>
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl"></div>
+          </div>
+          <div className="max-w-screen-xl mx-auto px-6 lg:px-12 relative z-10">
+            <SectionTitle sub="Skills & Competencies">역량 및 스킬</SectionTitle>
+
+            <div className="grid lg:grid-cols-2 gap-12">
+              {/* Skill Bars */}
+              <div className="glass rounded-2xl p-8">
+                <h3 className="text-lg font-bold text-white mb-8 flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                    <BarChart2 className="w-4 h-4 text-white" />
+                  </div>
+                  직무 역량 수준
+                </h3>
+                <div className="space-y-6">
+                  {SKILLS.map((skill, i) => (
+                    <div key={i}>
+                      <div className="flex justify-between items-center mb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-lg">{skill.icon}</span>
+                          <span className="text-slate-200 text-sm font-medium">{skill.name}</span>
+                        </div>
+                        <span className="text-indigo-300 text-sm font-bold">{skill.level}%</span>
+                      </div>
+                      <div className="h-2.5 bg-white/10 rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-1000 ease-out"
+                          style={{
+                            width: animated ? `${skill.level}%` : '0%',
+                            background: `linear-gradient(to right, ${skill.color}, ${skill.color}88)`,
+                            transitionDelay: `${i * 0.1}s`
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Certs & Tags */}
+              <div className="space-y-6">
+                {/* Certificates */}
+                <div className="glass rounded-2xl p-8">
+                  <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center">
+                      <Award className="w-4 h-4 text-white" />
+                    </div>
+                    자격증
+                  </h3>
+                  <div className="space-y-4">
+                    {CERTS.map((cert, i) => (
+                      <div key={i} className={`flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r ${cert.color} bg-opacity-10 border border-white/10 card-hover`}
+                        style={{background: 'rgba(99,102,241,0.08)'}}>
+                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${cert.color} flex items-center justify-center text-2xl flex-shrink-0 shadow-lg`}>
+                          {cert.icon}
+                        </div>
+                        <div className="flex-1">
+                          <p className="text-white font-semibold text-sm">{cert.name}</p>
+                          <p className="text-slate-400 text-xs mt-0.5">{cert.org} · {cert.year}년</p>
+                        </div>
+                        <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Skill Tags */}
+                <div className="glass rounded-2xl p-8">
+                  <h3 className="text-lg font-bold text-white mb-6 flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-teal-500 flex items-center justify-center">
+                      <Layers className="w-4 h-4 text-white" />
+                    </div>
+                    보유 역량 태그
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {[
+                      '문서 작성', '발주 관리', '재고 점검', '민원 응대', '부서 협업',
+                      '체크리스트 관리', '전산 시스템', 'AI 활용', '오피스 활용',
+                      '데이터 정리', '일정 조율', '서비스 마인드', '현장 운영',
+                      '기술지원', '물류 관리', '회원 관리',
+                    ].map((tag, i) => (
+                      <span key={i} className="tag-pill px-3 py-1.5 rounded-lg text-xs font-medium text-indigo-200 cursor-default">
+                        #{tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    // ─── Education ────────────────────────────────────────────
+    const Education = () => (
+      <section id="education" className="py-28 bg-slate-950 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute bottom-0 right-0 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl"></div>
+        </div>
+        <div className="max-w-screen-xl mx-auto px-6 lg:px-12 relative z-10">
+          <SectionTitle sub="Education & Training">학력 및 교육</SectionTitle>
+
+          <div className="grid lg:grid-cols-2 gap-8">
+            {/* Education */}
+            <div>
+              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
+                  <GraduationCap className="w-5 h-5 text-white" />
+                </div>
+                학력사항
+              </h3>
+              {EDUCATIONS.map((edu, i) => (
+                <div key={i} className={`glass rounded-2xl overflow-hidden card-hover`}>
+                  <div className={`h-1.5 bg-gradient-to-r ${edu.color}`}></div>
+                  <div className="p-8">
+                    <div className="flex items-start gap-5">
+                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${edu.color} flex items-center justify-center text-3xl shadow-lg flex-shrink-0`}>
+                        {edu.icon}
+                      </div>
+                      <div>
+                        <h4 className="text-xl font-bold text-white mb-1">{edu.school}</h4>
+                        <p className="text-indigo-300 font-medium mb-2">{edu.major}</p>
+                        <div className="flex flex-wrap gap-2">
+                          <span className="flex items-center gap-1 text-slate-400 text-sm">
+                            <MapPin className="w-3.5 h-3.5" /> {edu.location}
+                          </span>
+                          <span className="flex items-center gap-1 text-slate-400 text-sm">
+                            <Calendar className="w-3.5 h-3.5" /> {edu.grad}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Training */}
+            <div>
+              <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
+                <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                  <BookOpen className="w-5 h-5 text-white" />
+                </div>
+                교육사항
+              </h3>
+              {TRAINING.map((t, i) => (
+                <div key={i} className={`glass rounded-2xl overflow-hidden card-hover`}>
+                  <div className={`h-1.5 bg-gradient-to-r ${t.color}`}></div>
+                  <div className="p-8">
+                    <div className="flex items-start gap-5">
+                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${t.color} flex items-center justify-center text-3xl shadow-lg flex-shrink-0`}>
+                        {t.icon}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-start justify-between gap-3 mb-2">
+                          <h4 className="text-base font-bold text-white leading-snug">{t.name}</h4>
+                          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-500/20 text-green-400 border border-green-500/30 flex-shrink-0">
+                            {t.status}
+                          </span>
+                        </div>
+                        <p className="text-indigo-300 font-medium text-sm mb-3">{t.org}</p>
+                        <div className="flex flex-wrap gap-3">
+                          <span className="flex items-center gap-1 text-slate-400 text-sm">
+                            <Calendar className="w-3.5 h-3.5" /> {t.period}
+                          </span>
+                          <span className="flex items-center gap-1 text-slate-400 text-sm">
+                            <Clock className="w-3.5 h-3.5" /> {t.hours}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {/* AI Skills Highlight */}
+              <div className="mt-6 glass rounded-2xl p-6 border border-indigo-500/20">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-white" />
+                  </div>
+                  <h4 className="text-white font-bold">AI 활용 역량</h4>
+                </div>
+                <p className="text-slate-400 text-sm leading-relaxed">
+                  생성형 AI 및 로코드 기반 융합 소프트웨어 기획 개발자 양성과정을 통해
+                  <span className="text-indigo-300 font-semibold"> AI 도구 활용 능력</span>과
+                  <span className="text-indigo-300 font-semibold"> 소프트웨어 기획 역량</span>을 강화했습니다.
+                  행정 업무에서의 AI 도구 활용으로 업무 효율을 높일 수 있습니다.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    // ─── Self Introduction ────────────────────────────────────
+    const SelfIntro = () => {
+      const [activeTab, setActiveTab] = React.useState(0);
+
+      return (
+        <section id="selfintro" className="py-28 bg-slate-900 relative overflow-hidden">
+          <div className="absolute inset-0 pointer-events-none">
+            <div className="absolute top-1/4 right-0 w-80 h-80 bg-indigo-600/5 rounded-full blur-3xl"></div>
+            <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl"></div>
+          </div>
+          <div className="max-w-screen-xl mx-auto px-6 lg:px-12 relative z-10">
+            <SectionTitle sub="Self Introduction">자기소개서</SectionTitle>
+
+            {/* Tab Navigation */}
+            <div className="flex flex-wrap gap-2 mb-10 justify-center">
+              {SELF_INTRO_SECTIONS.map((s, i) => (
+                <button
+                  key={i}
+                  onClick={() => setActiveTab(i)}
+                  className={`flex items-center gap-2 px-5 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+                    activeTab === i
+                      ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/30 scale-105'
+                      : 'glass text-slate-400 hover:text-white hover:bg-white/10'
+                  }`}
+                >
+                  <span>{s.icon}</span>
+                  {s.title}
+                </button>
+              ))}
+            </div>
+
+            {/* Content */}
+            <div className="glass rounded-3xl overflow-hidden">
+              <div className={`h-2 bg-gradient-to-r ${SELF_INTRO_SECTIONS[activeTab].color}`}></div>
+              <div className="p-10 lg:p-14">
+                <div className="flex items-center gap-4 mb-8">
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${SELF_INTRO_SECTIONS[activeTab].color} flex items-center justify-center text-4xl shadow-xl`}>
+                    {SELF_INTRO_SECTIONS[activeTab].icon}
+                  </div>
+                  <div>
+                    <h3 className="text-2xl font-bold text-white">{SELF_INTRO_SECTIONS[activeTab].title}</h3>
+                    <p className="text-slate-400 text-sm mt-1">연세대학교 미래캠퍼스 행정사무직 지원</p>
+                  </div>
+                </div>
+                <div className="relative">
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-indigo-500 via-purple-500 to-transparent rounded-full"></div>
+                  <p className="pl-8 text-slate-300 text-lg leading-loose tracking-wide">
+                    {SELF_INTRO_SECTIONS[activeTab].content}
+                  </p>
+                </div>
+
+                {/* Navigation */}
+                <div className="flex justify-between items-center mt-10 pt-8 border-t border-white/10">
+                  <button
+                    onClick={() => setActiveTab(Math.max(0, activeTab - 1))}
+                    disabled={activeTab === 0}
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl glass text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 hover:bg-white/10"
+                  >
+                    ← 이전
+                  </button>
+                  <div className="flex gap-2">
+                    {SELF_INTRO_SECTIONS.map((_, i) => (
+                      <button key={i} onClick={() => setActiveTab(i)}
+                        className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+                          activeTab === i ? 'bg-indigo-400 w-8' : 'bg-white/20 hover:bg-white/40'
+                        }`}
+                      ></button>
+                    ))}
+                  </div>
+                  <button
+                    onClick={() => setActiveTab(Math.min(SELF_INTRO_SECTIONS.length - 1, activeTab + 1))}
+                    disabled={activeTab === SELF_INTRO_SECTIONS.length - 1}
+                    className="flex items-center gap-2 px-5 py-2.5 rounded-xl glass text-slate-400 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 hover:bg-white/10"
+                  >
+                    다음 →
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    };
+
+    // ─── Contact ──────────────────────────────────────────────
+    const Contact = () => (
+      <section id="contact" className="py-28 bg-slate-950 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-96 bg-indigo-600/5 rounded-full blur-3xl"></div>
+        </div>
+        <div className="max-w-screen-xl mx-auto px-6 lg:px-12 relative z-10">
+          <SectionTitle sub="Contact">연락처</SectionTitle>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Contact Info */}
+            <div>
+              <h3 className="text-3xl font-bold text-white mb-4">함께 일하고 싶으신가요?</h3>
+              <p className="text-slate-400 text-lg leading-relaxed mb-10">
+                성실하고 꼼꼼한 행정사무 인재로서 귀 기관의 안정적인 운영에 기여하고 싶습니다.
+                언제든지 편하게 연락 주세요.
+              </p>
+
+              <div className="space-y-4">
+                {[
+                  {
+                    icon: <Phone className="w-5 h-5" />,
+                    label: '연락처',
+                    value: '010-9152-8139',
+                    href: 'tel:010-9152-8139',
+                    color: 'from-green-500 to-teal-500',
+                  },
+                  {
+                    icon: <Mail className="w-5 h-5" />,
+                    label: '이메일',
+                    value: 'knud91@naver.com',
+                    href: 'mailto:knud91@naver.com',
+                    color: 'from-blue-500 to-indigo-500',
+                  },
+                  {
+                    icon: <MapPin className="w-5 h-5" />,
+                    label: '주소',
+                    value: '강원도 춘천시 춘천로 120',
+                    href: null,
+                    color: 'from-purple-500 to-pink-500',
+                  },
+                  {
+                    icon: <Calendar className="w-5 h-5" />,
+                    label: '생년월일',
+                    value: '1991년 5월 2일',
+                    href: null,
+                    color: 'from-orange-500 to-red-500',
+                  },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-4 glass rounded-xl p-5 card-hover group">
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${item.color} flex items-center justify-center flex-shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                      <span className="text-white">{item.icon}</span>
+                    </div>
+                    <div>
+                      <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider">{item.label}</p>
+                      {item.href ? (
+                        <a href={item.href} className="text-white font-medium hover:text-indigo-300 transition-colors">
+                          {item.value}
+                        </a>
+                      ) : (
+                        <p className="text-white font-medium">{item.value}</p>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Profile Summary Card */}
+            <div className="glass-strong rounded-3xl p-10 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-600/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl"></div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-5 mb-8">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center shadow-2xl shadow-indigo-500/30">
+                    <span className="text-4xl font-black text-white">K</span>
+                  </div>
+                  <div>
+                    <h4 className="text-2xl font-bold text-white">김남혁</h4>
+                    <p className="text-indigo-400 text-sm">행정사무 · 물류관리 · IT기술지원</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4 mb-8">
+                  <h5 className="text-slate-400 text-xs font-semibold uppercase tracking-widest">핵심 역량 요약</h5>
+                  {[
+                    { icon: '📋', text: '문서 정확성 및 행정 처리 능력' },
+                    { icon: '🔄', text: '다양한 환경에서의 빠른 적응력' },
+                    { icon: '💬', text: '민원 응대 및 부서 간 협업 능력' },
+                    { icon: '🤖', text: 'AI 도구 활용 및 전산 시스템 이해' },
+                    { icon: '⚡', text: '체크리스트 기반 실수 방지 습관' },
+                  ].map((item, i) => (
+                    <div key={i} className="flex items-center gap-3">
+                      <span className="text-lg">{item.icon}</span>
+                      <span className="text-slate-300 text-sm">{item.text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* CTA */}
+                <a href="mailto:knud91@naver.com"
+                  className="flex items-center justify-center gap-3 w-full py-4 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold hover:from-indigo-500 hover:to-purple-500 transition-all duration-300 shadow-xl shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105 text-base">
+                  <Mail className="w-5 h-5" />
+                  이메일 보내기
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+
+    // ─── Footer ───────────────────────────────────────────────
+    const Footer = () => (
+      <footer className="bg-slate-950 border-t border-white/5 py-10">
+        <div className="max-w-screen-xl mx-auto px-6 lg:px-12">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                <span className="text-white font-bold text-sm">K</span>
+              </div>
+              <span className="text-slate-400 text-sm">김남혁 포트폴리오 · 2026</span>
+            </div>
+            <p className="text-slate-600 text-sm text-center">
+              정확성 · 책임감 · 소통 능력을 바탕으로 조직의 안정적인 운영에 기여합니다
+            </p>
+            <div className="flex items-center gap-4">
+              <a href="tel:010-9152-8139" className="text-slate-500 hover:text-indigo-400 transition-colors text-sm flex items-center gap-1.5">
+                <Phone className="w-3.5 h-3.5" /> 010-9152-8139
+              </a>
+              <a href="mailto:knud91@naver.com" className="text-slate-500 hover:text-indigo-400 transition-colors text-sm flex items-center gap-1.5">
+                <Mail className="w-3.5 h-3.5" /> knud91@naver.com
+              </a>
+            </div>
+          </div>
+        </div>
+      </footer>
+    );
+
+    // ─── App ──────────────────────────────────────────────────
+    const App = () => {
+      const [activeSection, setActiveSection] = React.useState('hero');
+
+      React.useEffect(() => {
+        const sections = NAV_ITEMS.map(n => document.getElementById(n.id)).filter(Boolean);
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) setActiveSection(entry.target.id);
+            });
+          },
+          { threshold: 0.4, rootMargin: '-80px 0px 0px 0px' }
+        );
+        sections.forEach(s => observer.observe(s));
+        return () => observer.disconnect();
+      }, []);
+
+      return (
+        <div className="min-h-screen">
+          <Navbar activeSection={activeSection} />
+          <Hero />
+          <div className="section-divider"></div>
+          <About />
+          <div className="section-divider"></div>
+          <Career />
+          <div className="section-divider"></div>
+          <Skills />
+          <div className="section-divider"></div>
+          <Education />
+          <div className="section-divider"></div>
+          <SelfIntro />
+          <div className="section-divider"></div>
+          <Contact />
+          <Footer />
+        </div>
+      );
+    };
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+  </script>
+</body>
+</html>
